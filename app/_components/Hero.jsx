@@ -29,10 +29,10 @@ function Hero() {
   <div className="w-full px-4 mt-8 sm:mt-16 lg:mt-[-150px] max-w-screen-xl mx-auto">
         <div className="lg:w-11/12 xl:w-10/12 mx-auto">
           <Image 
-            src={'/dashboard.png'} 
+            src={'/dashboard.jpg'} 
             alt='dashboard'
             width={1200}
-            height={900}
+            height={1000}
             className='rounded-xl border-2 w-full h-auto shadow-2xl shadow-black/50'
           />
         </div>
