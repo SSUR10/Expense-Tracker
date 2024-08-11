@@ -66,18 +66,32 @@ function ExpensesScreen({params}) {
     /**
      * Used to Delete Budget
      */
-    const deleteBudget=async()=>{
-      const deleteExpenseResult=await db.delete(Expenses)
-      .where(eq(Expenses.id, params.id))
-      .returning()
-
-      if(deleteExpenseResult){
-        const result = await db.delete(Budgets)
-        .where(eq(Budgets.id, params.id))
-        .returning();
+    const deleteBudget = async () => {
+      try {
+        // First, delete all expenses associated with this budget
+        const deleteExpensesResult = await db.delete(Expenses)
+          .where(eq(Expenses.budgetId, params.id))
+          .returning();
+    
+        console.log('Deleted expenses:', deleteExpensesResult);
+    
+        // Then, delete the budget itself
+        const deleteBudgetResult = await db.delete(Budgets)
+          .where(eq(Budgets.id, params.id))
+          .returning();
+    
+        console.log('Deleted budget:', deleteBudgetResult);
+    
+        if (deleteBudgetResult && deleteBudgetResult.length > 0) {
+          toast.success('Budget and associated expenses deleted!');
+          route.replace('/dashboard/budgets');
+        } else {
+          toast.error('Failed to delete budget. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error deleting budget:', error);
+        toast.error('An error occurred while deleting the budget.');
       }
-      toast('Budget Deleted!');
-      route.replace('/dashboard/budgets')
     }
   return (
     <div className='p-10'>
