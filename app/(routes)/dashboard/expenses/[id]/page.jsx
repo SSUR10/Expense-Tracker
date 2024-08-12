@@ -65,7 +65,6 @@ function ExpensesScreen({ params }) {
     const expenseResult = await db.select().from(Expenses)
       .where(eq(Expenses.budgetId, params.id))
       .orderBy(desc(Expenses.id));
-<<<<<<< HEAD
     setExpenseList(expenseResult);
   }
   const deleteBudget = async () => {
@@ -93,40 +92,6 @@ function ExpensesScreen({ params }) {
     } catch (error) {
       console.error('Error deleting budget:', error);
       toast.error('An error occurred while deleting the budget.');
-=======
-      setExpenseList(result);
-    }
-
-    /**
-     * Used to Delete Budget
-     */
-    const deleteBudget = async () => {
-      try {
-        // First, delete all expenses associated with this budget
-        const deleteExpensesResult = await db.delete(Expenses)
-          .where(eq(Expenses.budgetId, params.id))
-          .returning();
-    
-        console.log('Deleted expenses:', deleteExpensesResult);
-    
-        // Then, delete the budget itself
-        const deleteBudgetResult = await db.delete(Budgets)
-          .where(eq(Budgets.id, params.id))
-          .returning();
-    
-        console.log('Deleted budget:', deleteBudgetResult);
-    
-        if (deleteBudgetResult && deleteBudgetResult.length > 0) {
-          toast.success('Budget and associated expenses deleted!');
-          route.replace('/dashboard/budgets');
-        } else {
-          toast.error('Failed to delete budget. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error deleting budget:', error);
-        toast.error('An error occurred while deleting the budget.');
-      }
->>>>>>> 8b183d5c605b29be7b2a7505e29765a5a67ded14
     }
   };
   return (
