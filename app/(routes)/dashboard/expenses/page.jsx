@@ -6,8 +6,11 @@ import { desc, eq, sql } from 'drizzle-orm'
 import Link from 'next/link'
 import { db } from '../../../../utils/dbconfig'
 import { Budgets, Expenses } from '../../../../utils/schema'
+import { useRouter } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
 
 function AllExpensesScreen() {
+    const route=useRouter();
     const { user } = useUser();
     const [allExpenses, setAllExpenses] = useState([]);
 
@@ -30,7 +33,8 @@ function AllExpensesScreen() {
 
     return (
         <div className='p-10'>
-            <h2 className='text-2xl font-bold mb-6'>Latest Expenses</h2>
+            <h2 className='text-2xl font-bold mb-6 flex items-center gap-2'>
+            <ArrowLeft onClick={()=>route.back()} className='cursor-pointer' />Latest Expenses</h2>
             <ExpenseListTable 
                 expensesList={allExpenses} 
                 refreshData={getAllExpenses}

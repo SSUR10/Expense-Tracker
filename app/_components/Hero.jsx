@@ -3,7 +3,7 @@ import React from 'react'
 
 function Hero() {
   return (
-<section className="bg-gray-900 text-white flex items-center flex-col">
+<section className="bg-gray-900 text-white flex items-center flex-col min-h-screen">
   <div className="mx-auto max-w-screen-xl px-4 py-16 lg:py-24 lg:flex lg:h-screen lg:items-center">
     <div className="mx-auto max-w-3xl text-center mb-8 lg:mb-16">
       <h1
@@ -18,8 +18,7 @@ function Hero() {
       </p>
 
       <div className="mt-8 flex flex-wrap justify-center gap-4">
-        <a
-          className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white transition duration-150 focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
+        <a className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white transition duration-150 focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
           href="/sign-up">
           Get Started
         </a>

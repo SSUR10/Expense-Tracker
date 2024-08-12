@@ -8,7 +8,6 @@ import Link from 'next/link'
 
 function SideNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLgScreen, setIsLgScreen] = useState(false);
   const menuList = [
     { id: 1, name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
     { id: 2, name: 'Budgets', icon: PiggyBank, path: '/dashboard/budgets' },
@@ -19,16 +18,7 @@ function SideNav() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setIsOpen(true);
-        setIsLgScreen(true);
-      } else if (window.innerWidth >= 640) {
-        setIsOpen(false);
-        setIsLgScreen(false);
-      } else {
-        setIsOpen(false);
-        setIsLgScreen(false);
-      }
+      setIsOpen(window.innerWidth >= 1024);
     };
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -39,22 +29,19 @@ function SideNav() {
 
   return (
     <>
-      {!isLgScreen && (
-        <button
-          onClick={toggleSidebar}
-          className="lg:hidden md:block sm:block fixed top-4 left-4 z-30 p-2 bg-gray-800 text-white rounded-md"
-        >
-          <Menu />
-        </button>
-      )}
-      <div className={`fixed inset-y-0 left-0 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:translate-x-0 transition-transform duration-200 ease-in-out lg:flex lg:flex-col h-screen p-5 shadow-sm bg-gray-900 z-20 w-64`}>
+      <button
+        onClick={toggleSidebar}
+        className="lg:hidden fixed top-4 left-4 z-30 p-2 bg-gray-800 text-white rounded-md"
+      >
+        <Menu />
+      </button>
+      
+      <div className={`fixed inset-y-0 left-0 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col h-screen p-5 shadow-sm bg-gray-900 z-20 w-64`}>
         <div className="flex justify-between items-center">
           <Image src='/logo.svg' width={160} height={100} alt="logo" className="logo-white" />
-          {!isLgScreen && (
-            <button onClick={toggleSidebar} className="lg:hidden md:block sm:block text-white">
-              <X size={24} />
-            </button>
-          )}
+          <button onClick={toggleSidebar} className="lg:hidden text-white">
+            <X size={24} />
+          </button>
         </div>
         <div className='mt-10'>
           {menuList.map((menu) => (
@@ -71,9 +58,9 @@ function SideNav() {
           Profile
         </div>
       </div>
-      {isOpen && !isLgScreen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-10 lg:hidden md:block sm:block" 
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-10 lg:hidden"
           onClick={toggleSidebar}
         ></div>
       )}

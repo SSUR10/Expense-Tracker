@@ -8,17 +8,24 @@ import Link from 'next/link'
 
 function ExpenseListTable({expensesList, refreshData, showBudgetName = false}) {
     const deleteExpense = async (expenses) => {
-        const result = await db.delete(Expenses)
-            .where(eq(Expenses.id, expenses.id))
-            .returning();
-        if (result) {
-            toast('Expense Deleted!')
-            refreshData()
+        try {
+            const result = await db.delete(Expenses)
+                .where(eq(Expenses.id, expenses.id))
+                .returning();
+            if (result.length > 0) {
+                toast.success('Expense Deleted!');
+                await refreshData(); // This will update both the parent and the AddExpense component
+            } else {
+                toast.error('Failed to delete expense');
+            }
+        } catch (error) {
+            console.error('Error deleting expense:', error);
+            toast.error('An error occurred while deleting the expense');
         }
     }
     return (
         <div className='mt-3 overflow-hidden rounded-lg shadow-md'>
-            <div className={`grid ${showBudgetName ? 'grid-cols-5' : 'grid-cols-4'} text-gray-700 bg-blue-100 p-3 font-semibold`}>
+            <div className={`grid ${showBudgetName ? 'grid-cols-5' : 'grid-cols-4'} text-gray-700 bg-blue-100 p-3 font-semibold gap-2`}>
                 <h2>Name</h2>
                 <h2>Amount</h2>
                 <h2>Date</h2>
@@ -26,7 +33,7 @@ function ExpenseListTable({expensesList, refreshData, showBudgetName = false}) {
                 <h2>Action</h2>
             </div>
             {expensesList.map((expenses, index) => (
-                <div key={expenses.id} className={`grid ${showBudgetName ? 'grid-cols-5' : 'grid-cols-4'} text-gray-700 bg-blue-50 p-3 ${index !== expensesList.length - 1 ? 'border-b border-blue-100' : ''}`}>
+                <div key={expenses.id} className={`grid ${showBudgetName ? 'grid-cols-5' : 'grid-cols-4'} text-gray-700 gap-2 bg-blue-50 p-3 ${index !== expensesList.length - 1 ? 'border-b border-blue-100' : ''}`}>
                     <h2 className="truncate">{expenses.name}</h2>
                     <h2>{expenses.amount}</h2>
                     <h2>{expenses.createdAt}</h2>

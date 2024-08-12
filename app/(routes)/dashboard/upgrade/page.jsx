@@ -1,6 +1,7 @@
 "use client"
 import React from 'react';
-import { Check, X } from 'lucide-react';
+import { ArrowLeft, Check, X } from 'lucide-react';
+import { useRouter } from 'next/navigation'
 
 const features = [
   { name: 'Basic Expense Tracking', free: true, premium: true },
@@ -64,10 +65,12 @@ const PricingTier = ({ title, price, features, isPremium }) => (
 );
 
 const UpgradePage = () => {
+  const route=useRouter();
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-4 text-blue-100">Upgrade Your Plan</h1>
+        <h1 className="text-4xl font-bold text-center mb-4 text-blue-100">
+        <ArrowLeft onClick={()=>route.back()} className='cursor-pointer size-10' />Upgrade Your Plan</h1>
         <p className="text-xl text-center text-teal-400 mb-12">
           Get more features and take control of your finances!
         </p>
