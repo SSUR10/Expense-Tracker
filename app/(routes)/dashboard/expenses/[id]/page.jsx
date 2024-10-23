@@ -29,6 +29,7 @@ function ExpensesScreen({ params }) {
   const [budgetInfo, setbudgetInfo] = useState();
   const [expenseList, setExpenseList] = useState([]);
   const route = useRouter();
+  
   useEffect(() => {
     if (user) {
       fetchBudgetAndExpenses();
@@ -36,18 +37,7 @@ function ExpensesScreen({ params }) {
   }, [user, params.id]);
 
   /**
-   * Get Budget Information
-   */
-
-  
-
-  /*
-  Get Latest Expenses
-  */
-
-
-  /**
-   * Used to Delete Budget
+   * Get Budget Information and Latest Expenses
    */
   const fetchBudgetAndExpenses = async () => {
     const result = await db.select({
@@ -67,6 +57,7 @@ function ExpensesScreen({ params }) {
       .orderBy(desc(Expenses.id));
     setExpenseList(expenseResult);
   }
+
   const deleteBudget = async () => {
     try {
       // First, delete all expenses associated with this budget
@@ -94,6 +85,7 @@ function ExpensesScreen({ params }) {
       toast.error('An error occurred while deleting the budget.');
     }
   };
+
   return (
     <div className='p-10'>
       <h2 className='text-2xl font-bold flex justify-between items-center'>
@@ -102,8 +94,9 @@ function ExpensesScreen({ params }) {
           My Expenses
         </span>
         <div className='flex gap-2 items-center'>
-          <EditBudget budgetInfo={budgetInfo}
-            refreshData={() => getBudgetInfo()}
+          <EditBudget 
+            budgetInfo={budgetInfo}
+            refreshData={() => fetchBudgetAndExpenses()}
           />
 
           <AlertDialog>
@@ -130,9 +123,7 @@ function ExpensesScreen({ params }) {
         </div>
       </h2>
       <div className='grid grid-cols-1 md:grid-cols-2 mt-6 gap-5'>
-        {budgetInfo ? <BudgetItem
-          budget={budgetInfo}
-        /> :
+        {budgetInfo ? <BudgetItem budget={budgetInfo} /> :
           <div className='h-[150px] w-full bg-slate-200 rounded-lg animate-pulse'>
           </div>}
         <AddExpense
